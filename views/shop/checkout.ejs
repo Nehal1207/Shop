@@ -1,0 +1,51 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/cart.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+        <main>
+            <% if (products.length > 0) { %>
+                <ul class="cart__item-list">
+                    <% products.forEach(p => { %>
+                        <li class="cart__item">
+                            <h1><%= p.productId.title %></h1>
+                            <h2>Quantity: <%= p.quantity %></h2>
+                            <form action="/cart-delete-item" method="POST">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                                <input type="hidden" value="<%= p.productId._id %>" name="productId">
+                                <button class="btn danger" type="submit">Delete</button>
+                            </form>
+                        </li>
+                    <% }) %>
+                </ul>
+                <hr>
+                <!-- <div class="centered">
+                    <form action="/create-order" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                        <button type="submit" class="btn">Order Now!</button>
+                    </form>
+                </div>  -->
+
+                 <div class="centered">
+                    <h1>Total Price : $<%= totalSum %> </h1>
+                </div>
+                <div class="centered">
+                    <button id="order-btn" class="btn">Order</button>
+                    <script src="https://js.stripe.com/v3/"></script>
+                    <script>
+                        var stripe = Stripe('pk_test_51I0jGkCydlpb16yZuHc8whKjPmJPp2IvsUCA4BJiERhdv1cVGaTWjfHYcPQLftDVx7h7eKJWtf0uyIHpralwS8ft00M7xuUTiY');
+                        var orderBtn = document.getElementById('order-btn');
+                        orderBtn.addEventListener('click', function() {
+                            stripe.redirectToCheckout({
+                                sessionId : '<%= sessionId %>'
+                            });
+                        });
+                    </script>
+                </div>
+                
+            <% } else { %>
+                <h1>No Products in Cart!</h1>
+            <% } %>
+        </main>
+        <%- include('../includes/end.ejs') %>
