@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Complete Node.js Guide",
   "main": "app.js",
-  "engine" {
+  "engine" : {
         "node" : "14.13.0"
    }
   "scripts": {
