@@ -2,7 +2,7 @@ const Product = require('../models/product');
 const Order = require('../models/order');
 //const Cart = require('../models/cart');
 
-const stripe = require('stripe')('sk_test_51I0jGkCydlpb16yZM2xVAUehvYtKhE653qRrKCHQ828NbWYZY7bSM8wyEFksRTE1mEWOIZDDqhUtDXbtvD4LrVlm00txYVu4uy');
+const stripe = require('stripe')(process.env.STRIPE_KEY);
 
 const ITEMS_PER_PAGE = 10;
 
