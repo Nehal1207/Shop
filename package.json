@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "Complete Node.js Guide",
   "main": "app.js",
-  "engine" : {
-        "node" : "14.13.0"
-   },
-  "scripts" : {
+  "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
     "start-server": "node app.js"
@@ -24,7 +21,6 @@
     "csurf": "^1.11.0",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
-    "express-handlebars": "^3.0.0",
     "express-session": "^1.17.1",
     "express-validator": "^6.8.0",
     "mongodb": "^3.6.3",
@@ -34,7 +30,6 @@
     "nodemailer": "^6.4.17",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "pdfkit": "^0.11.0",
-    "pug": "^2.0.3",
     "sequelize": "^6.3.5",
     "stripe": "^8.129.0"
   }
