@@ -17,7 +17,7 @@ const session = require('express-session');
 const mongoDbStore = require('connect-mongodb-session')(session);
 
 const store = new mongoDbStore({
-    uri: 'mongodb+srv://nehal12:nehal_12@cluster0.uaex1.mongodb.net/shop?retryWrites=true&w=majority',
+    uri: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.uaex1.mongodb.net/shop?retryWrites=true&w=majority`,
     collection: 'sessions'
 })
 
@@ -99,6 +99,6 @@ app.use(errorController.get404);
 app.use(errorController.get500);
 
 mongoose.connect('mongodb+srv://nehal12:nehal_12@cluster0.uaex1.mongodb.net/shop?retryWrites=true&w=majority').then(result => {
-        app.listen(3000);
+        app.listen(process.env.PORT || 3000);
 
 })
