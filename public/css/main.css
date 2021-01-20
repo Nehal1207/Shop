@@ -183,6 +183,9 @@ form {
 }
 
 .card__image img {
+  height: 100%;
+  max-width: 30rem;
+  max-height : 20rem;
   width: 100%;
 }
 
