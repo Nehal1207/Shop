@@ -1,6 +1,5 @@
 const Product = require('../models/product');
 //const mongodb = require('mongodb');
-const fileHelper = require('../util/file');
 
 const ITEMS_PER_PAGE = 10;
 
@@ -16,15 +15,9 @@ exports.getAddProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
 
   const title = req.body.title;
-  const image = req.file;
+  const imageUrl = req.body.imageUrl;
   const price = req.body.price;
     const description = req.body.description;
-
-    if (!image) {
-        return res.redirect('/admin/add-product');
-    }
-
-    const imageUrl = image.path;
 
     const product = new Product({
         title: title,
@@ -136,8 +129,6 @@ exports.deleteProduct = (req, res, next) => {
         if (!product) {
             throw new Error('No Product Found!!');
         }
-        fileHelper.deleteFile(product.imageUrl);
-
         return Product.deleteOne({ _id: prodId, userId: req.user._id }).then(result => {
             console.log('Product Deleted');
             res.json({message : 'Success'});

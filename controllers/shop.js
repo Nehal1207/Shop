@@ -2,6 +2,7 @@ const Product = require('../models/product');
 const Order = require('../models/order');
 //const Cart = require('../models/cart');
 
+console.log(process.env.STRIPE_KEY);
 const stripe = require('stripe')(process.env.STRIPE_KEY);
 
 const ITEMS_PER_PAGE = 10;
@@ -196,13 +197,13 @@ exports.getInvoice = (req, res, next) => {
         order.products.items.forEach(prod => {
 
             totalPrice += prod.quantity * prod.productId.price;
-            pdfDoc.fontSize(15).text(`${prod.productId.title}  -  ${prod.quantity} X $${prod.productId.price}`);
+            pdfDoc.fontSize(15).text(`${prod.productId.title}  -  ${prod.quantity} X Rs.${prod.productId.price}`);
 
         });
 
         pdfDoc.fontSize(26).text('------------------------------------------------------');
         pdfDoc.text(' ');
-        pdfDoc.fontSize(15).text('Total Price = $' + totalPrice);
+        pdfDoc.fontSize(15).text('Total Price = Rs.' + totalPrice);
 
         pdfDoc.end();
 
@@ -243,7 +244,7 @@ exports.getCheckout = (req, res, next) => {
                         name: prod.productId.title,
                         description: prod.productId.description,
                         amount: prod.quantity * prod.productId.price,
-                        currency: 'usd',
+                        currency: 'inr',
                         quantity: prod.quantity
                     }
                 }),

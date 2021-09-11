@@ -4,7 +4,7 @@ const authController = require('../controllers/auth');
 
 const isAuth = require('../middleware/isauth');
 
-const { check } = require('express-validator/check');
+const { check } = require('express-validator');
 
 const User = require('../models/user');
 

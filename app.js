@@ -1,40 +1,36 @@
 const path = require('path');
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
-
 const csrfProtection = csrf();
+const mongoose = require('mongoose');
+const session = require('express-session');
+
+require('dotenv').config()
+
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth');
 
 const errorController = require('./controllers/error');
+const User = require('./models/user');
 
-const mongoose = require('mongoose');
-
-const session = require('express-session');
 
 const mongoDbStore = require('connect-mongodb-session')(session);
 
-const MONGO_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.uaex1.mongodb.net/shop?retryWrites=true&w=majority` ;
+const MONGO_URI=process.env.MONGO_URI;
 
 const store = new mongoDbStore({
     uri: MONGO_URI,
     collection: 'sessions'
 })
 
-
-
 const app = express();
-
-const User = require('./models/user');
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
-
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
-const authRoutes = require('./routes/auth');
 
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -54,9 +50,9 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images',express.static(path.join(__dirname, 'images')));
@@ -80,7 +76,6 @@ app.use((req, res, next) => {
 })
 
 app.use((req, res, next) => {
-    //throw new Error('dummy');
     if (!req.session.user) {
         return next();
     }
@@ -97,10 +92,10 @@ app.use(shopRoutes);
 app.use(authRoutes);
 
 app.use(errorController.get404);
-
 app.use(errorController.get500);
 
-mongoose.connect(MONGO_URI).then(result => {
+mongoose.connect(process.env.MONGO_URI,{ useNewUrlParser: true,useUnifiedTopology: true}).then(result => {
         app.listen(process.env.PORT || 3000);
+        console.log("Server Started At Port:"+ (process.env.PORT || 3000));
 
 })
